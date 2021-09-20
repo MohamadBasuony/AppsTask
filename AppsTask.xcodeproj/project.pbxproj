@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C29C65226F87D9500AE72AC /* AppsTask.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2C29C65026F87D9500AE72AC /* AppsTask.xcdatamodeld */; };
 		2CA2633B26F7CC0B0000E239 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2633926F7CC0B0000E239 /* ImageCell.swift */; };
 		2CA2633C26F7CC0B0000E239 /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CA2633A26F7CC0B0000E239 /* ImageCell.xib */; };
 		2CA2634526F7CD7A0000E239 /* OrderDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA2634426F7CD7A0000E239 /* OrderDetailsVC.swift */; };
@@ -29,8 +30,6 @@
 		2CBF952826F6DE190046AA92 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBF952726F6DE190046AA92 /* Constants.swift */; };
 		2CBF953126F74FA80046AA92 /* FoodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBF952F26F74FA80046AA92 /* FoodCell.swift */; };
 		2CBF953226F74FA80046AA92 /* FoodCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CBF953026F74FA80046AA92 /* FoodCell.xib */; };
-		2CBF953826F754E10046AA92 /* FoodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBF953726F754E10046AA92 /* FoodModel.swift */; };
-		2CBF954526F7A11F0046AA92 /* AppsTask.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2CBF954326F7A11F0046AA92 /* AppsTask.xcdatamodeld */; };
 		2CBF954E26F7A8490046AA92 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBF954D26F7A8490046AA92 /* DataController.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C29C65126F87D9500AE72AC /* AppsTask.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppsTask.xcdatamodel; sourceTree = "<group>"; };
 		2CA2633926F7CC0B0000E239 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		2CA2633A26F7CC0B0000E239 /* ImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
 		2CA2634426F7CD7A0000E239 /* OrderDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsVC.swift; sourceTree = "<group>"; };
@@ -64,7 +64,7 @@
 		2CBF94BF26F69F3B0046AA92 /* AppsTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppsTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CBF94C226F69F3B0046AA92 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2CBF94C426F69F3B0046AA92 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		2CBF94C626F69F3B0046AA92 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = "../New Group/ViewController.swift"; sourceTree = "<group>"; };
+		2CBF94C626F69F3B0046AA92 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2CBF94C926F69F3B0046AA92 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2CBF94CB26F69F3E0046AA92 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2CBF94CE26F69F3E0046AA92 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -77,11 +77,9 @@
 		2CBF94E626F69F3E0046AA92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2CBF951B26F6D6850046AA92 /* KindCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KindCell.swift; sourceTree = "<group>"; };
 		2CBF951C26F6D6850046AA92 /* KindCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KindCell.xib; sourceTree = "<group>"; };
-		2CBF952726F6DE190046AA92 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = AppsTask/Home/Cells/Constants.swift; sourceTree = SOURCE_ROOT; };
+		2CBF952726F6DE190046AA92 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = AppsTask/Helpers/Constants.swift; sourceTree = SOURCE_ROOT; };
 		2CBF952F26F74FA80046AA92 /* FoodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCell.swift; sourceTree = "<group>"; };
 		2CBF953026F74FA80046AA92 /* FoodCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FoodCell.xib; sourceTree = "<group>"; };
-		2CBF953726F754E10046AA92 /* FoodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FoodModel.swift; path = ../../../../Assets/FoodModel.swift; sourceTree = "<group>"; };
-		2CBF954426F7A11F0046AA92 /* AppsTask.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppsTask.xcdatamodel; sourceTree = "<group>"; };
 		2CBF954D26F7A8490046AA92 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -179,7 +177,6 @@
 			isa = PBXGroup;
 			children = (
 				2CA2634026F7CC840000E239 /* Controllers */,
-				2CBF953626F754CF0046AA92 /* Models */,
 				2CBF952226F6D6AE0046AA92 /* Cells */,
 			);
 			path = Home;
@@ -210,19 +207,11 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		2CBF953626F754CF0046AA92 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				2CBF953726F754E10046AA92 /* FoodModel.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		2CBF954C26F7A8190046AA92 /* Core */ = {
 			isa = PBXGroup;
 			children = (
 				2CBF954D26F7A8490046AA92 /* DataController.swift */,
-				2CBF954326F7A11F0046AA92 /* AppsTask.xcdatamodeld */,
+				2C29C65026F87D9500AE72AC /* AppsTask.xcdatamodeld */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -366,16 +355,15 @@
 				2CA33DDC26F84A1B00966EA1 /* CartCell.swift in Sources */,
 				2CBF952826F6DE190046AA92 /* Constants.swift in Sources */,
 				2CA33DC826F842A400966EA1 /* CartVC.swift in Sources */,
+				2C29C65226F87D9500AE72AC /* AppsTask.xcdatamodeld in Sources */,
 				2CBF953126F74FA80046AA92 /* FoodCell.swift in Sources */,
 				2CBF94C726F69F3B0046AA92 /* ViewController.swift in Sources */,
 				2CBF94C326F69F3B0046AA92 /* AppDelegate.swift in Sources */,
 				2CA33DBC26F81C2B00966EA1 /* FavoriteVC.swift in Sources */,
 				2CBF954E26F7A8490046AA92 /* DataController.swift in Sources */,
 				2CA2634526F7CD7A0000E239 /* OrderDetailsVC.swift in Sources */,
-				2CBF954526F7A11F0046AA92 /* AppsTask.xcdatamodeld in Sources */,
 				2CBF94C526F69F3B0046AA92 /* SceneDelegate.swift in Sources */,
 				2CBF951D26F6D6850046AA92 /* KindCell.swift in Sources */,
-				2CBF953826F754E10046AA92 /* FoodModel.swift in Sources */,
 				2CA2633B26F7CC0B0000E239 /* ImageCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -711,14 +699,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		2CBF954326F7A11F0046AA92 /* AppsTask.xcdatamodeld */ = {
+		2C29C65026F87D9500AE72AC /* AppsTask.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				2CBF954426F7A11F0046AA92 /* AppsTask.xcdatamodel */,
+				2C29C65126F87D9500AE72AC /* AppsTask.xcdatamodel */,
 			);
-			currentVersion = 2CBF954426F7A11F0046AA92 /* AppsTask.xcdatamodel */;
-			name = AppsTask.xcdatamodeld;
-			path = "../New Group/AppsTask.xcdatamodeld";
+			currentVersion = 2C29C65126F87D9500AE72AC /* AppsTask.xcdatamodel */;
+			path = AppsTask.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
