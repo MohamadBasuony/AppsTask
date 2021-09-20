@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "B8F81E62-045B-44D5-ACA1-FB21871C39E0"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "465AEEDA-2FE1-425A-8DC6-2D4391EB48A7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../Assets/FoodModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "9"
+            endingLineNumber = "9"
+            landmarkName = "unknown"
+            landmarkType = "0">
+            <Locations>
+               <Location
+                  uuid = "465AEEDA-2FE1-425A-8DC6-2D4391EB48A7 - 532c7f2456472f5e"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AppsTask.Food.deinit"
+                  moduleName = "AppsTask"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mohamadbasuony/Documents/iCloud%20Drive%20(Archive)/Desktop/Work/Apps%20Square/Assets/FoodModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  uuid = "465AEEDA-2FE1-425A-8DC6-2D4391EB48A7 - 5851c334d93dfde5"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AppsTask.Food.__deallocating_deinit"
+                  moduleName = "AppsTask"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mohamadbasuony/Documents/iCloud%20Drive%20(Archive)/Desktop/Work/Apps%20Square/Assets/FoodModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
