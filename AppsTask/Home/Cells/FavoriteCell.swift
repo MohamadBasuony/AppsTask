@@ -14,6 +14,8 @@ class FavoriteCell: UITableViewCell {
     @IBOutlet weak var foodNameLabel1: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     
+    var viewModel : ViewModel?
+
     var food : Food? {
         didSet {
             foodImage.image = UIImage(named: food?.foodImage ?? "")
@@ -33,4 +35,7 @@ class FavoriteCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    @IBAction func favoriteButton(_ sender: Any) {
+        viewModel?.deleteFromFavorite(id : food?.id ?? "")
+    }
 }

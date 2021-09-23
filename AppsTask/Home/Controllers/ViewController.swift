@@ -13,10 +13,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var foodTV: UITableView!
     
-    var kinds = [String]()
-    var filteredFood = [Food]()
+    var viewModel = ViewModel()
 
-    var food = [Food]()
     var selectedIndex = 0
     
     var currentIndex = IndexPath(item: 0, section: 0)
@@ -24,6 +22,8 @@ class ViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        viewModel.fetchFood(foodType: "\(selectedIndex)")
+
     }
     
     override func viewDidLoad() {
@@ -38,71 +38,26 @@ class ViewController: UIViewController {
         
         searchBar.delegate = self
         
-        kinds.append("Burger")
-        kinds.append("Pizza")
-        kinds.append("Pasta")
-        kinds.append("Salad")
+        viewModel.delegate = self
         
-        if !UserDefaults.standard.bool(forKey: "firstTime") {
-            UserDefaults.standard.set(true, forKey: "firstTime")
-            addFoodtoStore(id: "0", name: "Cheese Burger", price: 20.0, isFavorite: true, backgroundImage: "orange", foodImage: "burger", foodType: "0" , mediumPrice : 15 , smallPrice: 10)
-            addFoodtoStore(id: "1", name: "Cheese Burger", price: 20.0, isFavorite: false, backgroundImage: "green", foodImage: "burger1", foodType: "0" , mediumPrice : 15 , smallPrice: 10)
-            addFoodtoStore(id: "2", name: "Cheese Burger", price: 20.0, isFavorite: true, backgroundImage: "orange", foodImage: "burger", foodType: "0", mediumPrice : 15 , smallPrice: 10)
-            
-            addFoodtoStore(id: "3", name: "Pizza", price: 30.0, isFavorite: false, backgroundImage: "orange", foodImage: "pizza", foodType: "1", mediumPrice : 15 , smallPrice: 10)
-            addFoodtoStore(id: "4", name: "Hawiian Pizza", price: 10.0, isFavorite: true, backgroundImage: "green", foodImage: "pizza1", foodType: "1", mediumPrice : 15 , smallPrice: 10)
-        }
+        viewModel.storeInit()
 
-        fetchFood(foodType: "0")
+//        viewModel.fetchFood(foodType: "\(selectedIndex)")
 
         // Do any additional setup after loading the view.
     }
 
-    func addFoodtoStore (id : String,name: String, price: Double, isFavorite: Bool, backgroundImage: String, foodImage: String , foodType : String , mediumPrice : Double , smallPrice : Double ){
-        let food = Food(context: DataController.shared.viewContext)
-        food.id = id
-        food.name = name
-        food.price = price
-        food.isFavorite = isFavorite
-        food.backgroundImage = backgroundImage
-        food.foodImage = foodImage
-        food.foodType = foodType
-        food.mediumPrice = mediumPrice
-        food.smallPrice = smallPrice
-        try? DataController.shared.viewContext.save()
-    }
-    
-    func fetchFood(foodType : String){
-        let fetchRequest : NSFetchRequest<Food> = Food.fetchRequest()
-        let predicate = NSPredicate(format: "foodType == %@",foodType )
-        fetchRequest.predicate = predicate
-        food = try! DataController.shared.viewContext.fetch(fetchRequest)
-        filteredFood = food
-        foodTV.reloadData()
-        print(food)
-    }
-    
-    func fetchProduct(id : String) -> [Food]{
-        let fetchRequest : NSFetchRequest<Food> = Food.fetchRequest()
-        let predicate = NSPredicate(format: "id == %@",id )
-        fetchRequest.predicate = predicate
-        return try! DataController.shared.viewContext.fetch(fetchRequest)
-    }
-    
-    func toggleFavorite(id : String , isFavorite : Bool){
-        let index = food.firstIndex(where:  { (food) -> Bool in
-            food.id == id
-        })
-        food[index!].isFavorite = isFavorite
-        let foodToDelete  = fetchProduct(id: id)
-        foodToDelete.first?.isFavorite = isFavorite
-        foodTV.reloadData()
-        try? DataController.shared.viewContext.save()
 
-    }
+    
+
+    
+
+    
+//   
+    
     func filterArr(searchTxt :String){
    
-        self.filteredFood = self.food.filter { $0.name?.localizedCaseInsensitiveContains(searchTxt) ?? true }
+        self.viewModel.filteredFood = self.viewModel.food.filter { $0.name?.localizedCaseInsensitiveContains(searchTxt) ?? true }
         self.foodTV.reloadData()
 
     }
@@ -116,7 +71,7 @@ class ViewController: UIViewController {
 
 extension ViewController : UICollectionViewDelegate , UICollectionViewDataSource ,UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        kinds.count
+        viewModel.kinds.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -124,23 +79,19 @@ extension ViewController : UICollectionViewDelegate , UICollectionViewDataSource
         if indexPath.row == 0 {
             cell.customBackgroundView.backgroundColor = TaskColors.lightOrange.color
         }
-        cell.kindNameLabel.text = kinds[indexPath.row]
+        cell.kindNameLabel.text = viewModel.kinds[indexPath.row]
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedIndex = indexPath.row
         previousIndex = currentIndex
         currentIndex = indexPath
-        print(previousIndex , currentIndex)
         let cell = kindsCV.cellForItem(at: indexPath) as! KindCell
         let previousCell = kindsCV.cellForItem(at: previousIndex) as! KindCell
-
         cell.customBackgroundView.backgroundColor = TaskColors.lightOrange.color
         previousCell.customBackgroundView.backgroundColor = UIColor.white
-        fetchFood(foodType: "\(indexPath.item)")
-//        foodTV.reloadData()
-//        foodTV.scrollToRow(at: IndexPath(row: 0, section: indexPath.section ), at: .top, animated: true)
-
+        viewModel.fetchFood(foodType: "\(selectedIndex)")
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -153,20 +104,20 @@ extension ViewController : UITableViewDelegate , UITableViewDataSource {
     
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return filteredFood.count
+        return viewModel.filteredFood.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = foodTV.dequeueReusableCell(withIdentifier: "FoodCell", for: indexPath) as! FoodCell
-        cell.vc = self
-        cell.food = filteredFood[indexPath.row]
+        cell.viewModel = viewModel
+        cell.food = viewModel.filteredFood[indexPath.row]
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         foodTV.deselectRow(at: indexPath, animated: true)
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "OrderDetailsVC") as! OrderDetailsVC
-        vc.food = filteredFood[indexPath.row]
+        vc.food = viewModel.filteredFood[indexPath.row]
         self.navigationController?.pushViewController(vc, animated: true)
 
     }
@@ -184,7 +135,7 @@ extension ViewController : UISearchBarDelegate {
         print("searchText \(searchText)")
         if searchText == ""{
             self.view.endEditing(true)
-            self.filteredFood = self.food
+            self.viewModel.filteredFood = self.viewModel.food
             self.foodTV.reloadData()
         }else{
             self.filterArr(searchTxt: searchText)
@@ -194,4 +145,12 @@ extension ViewController : UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         self.view.endEditing(true)
     }
+}
+
+extension ViewController : ViewModelDelegate {
+    
+    func getHomeProductDidSuccess() {
+        foodTV.reloadData()
+    }
+    
 }

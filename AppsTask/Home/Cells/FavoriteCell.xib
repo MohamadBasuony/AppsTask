@@ -68,6 +68,9 @@
                                 <rect key="frame" x="2" y="2" width="36" height="36"/>
                                 <color key="tintColor" red="0.88235294119999996" green="0.52941176469999995" blue="0.1176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="favorite"/>
+                                <connections>
+                                    <action selector="favoriteButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="9tA-by-ewe"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.88235294119999996" green="0.52941176469999995" blue="0.1176470588" alpha="0.34999999999999998" colorSpace="custom" customColorSpace="sRGB"/>

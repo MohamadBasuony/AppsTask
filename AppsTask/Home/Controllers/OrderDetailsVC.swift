@@ -26,6 +26,8 @@ class OrderDetailsVC: UIViewController {
     
     @IBOutlet weak var priceLabel: UILabel!
     
+    var viewModel = ViewModel()
+
     
     var quantity = 0.0
     var selctedSizePrice = 0.0
@@ -37,6 +39,7 @@ class OrderDetailsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.delegate = self
         orderImagesCV.dataSource = self
         orderImagesCV.delegate = self
         orderImagesCV.isPrefetchingEnabled = false
@@ -60,53 +63,7 @@ class OrderDetailsVC: UIViewController {
         orderImagesCV.reloadData()
     }
     
-    func fetchProduct() -> [Cart]{
-        let fetchRequest : NSFetchRequest<Cart> = Cart.fetchRequest()
-        let predicate = NSPredicate(format: "id == %@",food!.id!  )
-        fetchRequest.predicate = predicate
-        return try! DataController.shared.viewContext.fetch(fetchRequest)
-    }
-    
-    func checkIfInCart() -> Bool{
-        print("Check")
-        let result = fetchProduct()
-        if result.count < 1 {
-            return false
-        }else{
-            return true
-        }
-    }
-    
-    func addFoodtoCart(){
-        let cart = Cart(context: DataController.shared.viewContext)
-        cart.id = food?.id ?? "0"
-        cart.name = food?.name ?? ""
-        cart.price = selctedSizePrice
-        cart.count = quantity
-        cart.image = food?.foodImage ?? ""
-        cart.size = sizeLabel.text ?? ""
-        try? DataController.shared.viewContext.save()
-    }
-    
-    func editProduct(){
-        let result = fetchProduct()
-        if result.first!.size != sizeLabel.text! {
-            let alert = UIAlertController(title: nil, message: "Do you want to change the size ?", preferredStyle: .alert)
-            let ok = UIAlertAction(title: "No", style: .default, handler: nil)
-            let signin = UIAlertAction(title: "Yes", style: .default) { (action) in
-                result.first!.size = self.sizeLabel.text ?? ""
-                result.first?.price = self.selctedSizePrice
-            }
-            
-            alert.addAction(ok)
-            alert.addAction(signin)
-            present(alert, animated: true, completion: nil)
-        }else{
-            result.first?.count = (result.first?.count ?? 0) + quantity
-        }
-        try? DataController.shared.viewContext.save()
 
-    }
     
     @IBAction func plusButton(_ sender: Any) {
         quantity = quantity + 1
@@ -121,6 +78,11 @@ class OrderDetailsVC: UIViewController {
             quantity = quantity - 1
             quantityLabel.text = "\(quantity)"
         }
+    }
+    
+    func goToCart(){
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CartVC") as! CartVC
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @IBAction func orderButton(_ sender: Any) {
@@ -138,19 +100,18 @@ class OrderDetailsVC: UIViewController {
     
     
     
-    
     @IBAction func addToCartButton(_ sender: Any) {
         print("ADD To Cart")
-        if checkIfInCart() {
+        if viewModel.checkIfInCart(foodId: food?.id ?? "") {
             print("Edit To Cart")
-            editProduct()
+            viewModel.checkSize(foodId: food?.id ?? "" , size: sizeLabel.text ?? "" , price: selctedSizePrice , quantity: quantity)
+
         }else{
             print("ADD To Cart")
 
-            addFoodtoCart()
+            viewModel.addFoodtoCart(food: food! , selctedSizePrice: selctedSizePrice, quantity: quantity , size: sizeLabel.text ?? "")
         }
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CartVC") as! CartVC
-        self.navigationController?.pushViewController(vc, animated: true)
+        
     }
     
     
@@ -199,6 +160,25 @@ extension OrderDetailsVC : UICollectionViewDelegate , UICollectionViewDataSource
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //        return CGSize(width: self.view.frame.width, height: 300)
 //    }
+
     
+}
+
+extension OrderDetailsVC : ViewModelDelegate {
+    func showCheckSizeAlert() {
+        let alert = UIAlertController(title: nil, message: "Do you want to change the size ?", preferredStyle: .alert)
+        let no = UIAlertAction(title: "No", style: .default, handler: nil)
+        let yes = UIAlertAction(title: "Yes", style: .default) { [self] (action) in
+            viewModel.editProduct(foodId: food?.id ?? "" , size: sizeLabel.text ?? "" , price: selctedSizePrice , quantity: quantity)
+
+        }
+        
+        alert.addAction(no)
+        alert.addAction(yes)
+        present(alert, animated: true, completion: nil)
+    }
     
+    func itemAddedToCartSuccessfullly() {
+        goToCart()
+    }
 }

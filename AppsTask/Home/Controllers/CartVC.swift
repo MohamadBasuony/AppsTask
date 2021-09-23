@@ -16,7 +16,10 @@ class CartVC: UIViewController {
     @IBOutlet weak var totalOrderLabel: UILabel!
     @IBOutlet weak var checkOutButton: UIButton!
     
-    var cart = [Cart]()
+    
+    var viewModel = ViewModel()
+    
+//    var cart = [Cart]()
     var totalAmount = 0.0
     var total = 0.0
     override func viewWillAppear(_ animated: Bool) {
@@ -25,88 +28,18 @@ class CartVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.delegate = self
         cartTV.delegate = self
         cartTV.dataSource = self
         cartTV.register(UINib(nibName: "CartCell", bundle: nil), forCellReuseIdentifier: "CartCell")
-        fetchCartProducts()
+        viewModel.fetchCartProducts()
         // Do any additional setup after loading the view.
     }
     
-    func fetchCartProducts(){
-        let fetchRequest : NSFetchRequest<Cart> = Cart.fetchRequest()
-        cart = try! DataController.shared.viewContext.fetch(fetchRequest)
-        cartTV.reloadData()
-    }
-    
-    func fetchProduct(id : String) -> [Cart]{
-        let fetchRequest : NSFetchRequest<Cart> = Cart.fetchRequest()
-        let predicate = NSPredicate(format: "id == %@",id )
-        fetchRequest.predicate = predicate
-        return try! DataController.shared.viewContext.fetch(fetchRequest)
-    }
-    
-    func updateQuantity(id : String , quantity : Double , plus : Bool){
-        let result = fetchProduct(id: id)
-       
-        if quantity == 0  {
-                let alert = UIAlertController(title: nil, message: "Are you sure you want to remove this product from cart?", preferredStyle: .alert)
-                let ok = UIAlertAction(title: "No", style: .default, handler: nil)
-                let signin = UIAlertAction(title: "Yes", style: .default) { (action) in
-                    self.deleteFromCart(id : id)
-                }
-                alert.addAction(ok)
-                alert.addAction(signin)
-                present(alert, animated: true, completion: nil)
-        }else{
-            result.first?.count = quantity
-            try? DataController.shared.viewContext.save()
 
-            if plus {
-                totalAmount = totalAmount + ((result.first?.price ?? 0))
-            }else{
-                totalAmount = totalAmount - ((result.first?.price ?? 0))
-            }
-            total = totalAmount
-            orderAmountLabel.text = "\(totalAmount)"
-            totalOrderLabel.text = "\(total)"
-            checkOutButton.setTitle("Checkout $\(total)", for: .normal)
-            
-        }
-        
-    }
-    
-    func deleteFromCart(id : String){
-        totalAmount = 0.0
-        let index = cart.firstIndex(where:  { (food) -> Bool in
-            food.id == id
-        })
-        cart.remove(at: index!)
-        let foodToDelete  = fetchProduct(id: id)
-        if cart.count == 0 {
-            self.orderAmountLabel.text = "\(self.totalAmount)"
-            self.totalOrderLabel.text = "\(0.0)"
-            self.checkOutButton.setTitle("Checkout", for: .normal)
-        }
-        DataController.shared.viewContext.delete(foodToDelete.first!)
-        try? DataController.shared.viewContext.save()
-        cartTV.reloadData()
-    }
-    
-    func checkout(){
-        totalAmount = 0.0
-        self.orderAmountLabel.text = "\(self.totalAmount)"
-        self.totalOrderLabel.text = "\(0.0)"
-        self.checkOutButton.setTitle("Checkout", for: .normal)
-        for x in cart {
-            DataController.shared.viewContext.delete(x)
-            try? DataController.shared.viewContext.save()
-        }
-        cart.removeAll()
-        cartTV.reloadData()
-    }
     
     @IBAction func checkOutButton(_ sender: Any) {
-        checkout()
+        viewModel.checkout()
     }
     
     @IBAction func backButton(_ sender: Any) {
@@ -117,16 +50,16 @@ class CartVC: UIViewController {
 
 extension CartVC : UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cart.count
+        return viewModel.cartProoducts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = cartTV.dequeueReusableCell(withIdentifier: "CartCell", for: indexPath) as! CartCell
-        cell.cart = cart[indexPath.row]
-        cell.vc = self
-        totalAmount = totalAmount + (cart[indexPath.row].price * cart[indexPath.row].count)
+        cell.cart = viewModel.cartProoducts[indexPath.row]
+        cell.viewModel = viewModel
+        totalAmount = totalAmount + (viewModel.cartProoducts[indexPath.row].price * viewModel.cartProoducts[indexPath.row].count)
         total = totalAmount + 10.02
-        if (indexPath.row + 1) == cart.count {
+        if (indexPath.row + 1) == viewModel.cartProoducts.count {
             orderAmountLabel.text = "\(totalAmount)"
             totalOrderLabel.text = "\(total)"
             checkOutButton.setTitle("Checkout $\(total)", for: .normal)
@@ -136,7 +69,7 @@ extension CartVC : UITableViewDelegate , UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
        if editingStyle == .delete {
-        deleteFromCart(id : cart[indexPath.row].id ?? "")
+        viewModel.deleteFromCart(id : viewModel.cartProoducts[indexPath.row].id ?? "")
        }
    }
     
@@ -144,4 +77,63 @@ extension CartVC : UITableViewDelegate , UITableViewDataSource {
         return 130
     }
     
+}
+
+extension CartVC : ViewModelDelegate {
+    func getCartProductsDidSuccess(){
+        cartTV.reloadData()
+    }
+    
+    func checkoutDidSuccess() {
+        cartTV.reloadData()
+        totalAmount = 0.0
+        self.orderAmountLabel.text = "\(self.totalAmount)"
+        self.totalOrderLabel.text = "\(0.0)"
+        self.checkOutButton.setTitle("Checkout", for: .normal)
+    }
+    
+    func deleteProductFromCartDidSuccess() {
+        totalAmount = 0.0
+//        let index = cart.firstIndex(where:  { (food) -> Bool in
+//            food.id == id
+//        })
+//        cart.remove(at: index!)
+//        let foodToDelete  = fetchProductFromCart(foodId: id)
+        if viewModel.cartProoducts.count == 0 {
+            self.orderAmountLabel.text = "\(self.totalAmount)"
+            self.totalOrderLabel.text = "\(0.0)"
+            self.checkOutButton.setTitle("Checkout", for: .normal)
+        }
+        cartTV.reloadData()
+        
+    }
+    
+    func showCheckQuantityAlert(id : String) {
+        let alert = UIAlertController(title: nil, message: "Are you sure you want to remove this product from cart?", preferredStyle: .alert)
+        let no = UIAlertAction(title: "No", style: .default, handler: nil)
+        let yes = UIAlertAction(title: "Yes", style: .default) { (action) in
+            self.viewModel.deleteFromCart(id : id)
+        }
+        alert.addAction(no)
+        alert.addAction(yes)
+        present(alert, animated: true, completion: nil)
+
+    }
+    
+    func upadetPrice(price : Double , plus : Bool){
+        if plus {
+            totalAmount = totalAmount + price
+            total = total + price
+        }else{
+            
+            totalAmount = totalAmount - price
+            total = total - price
+        }
+        
+        
+        orderAmountLabel.text = "\(totalAmount)"
+        totalOrderLabel.text = "\(total)"
+        checkOutButton.setTitle("Checkout $\(total)", for: .normal)
+    }
+
 }

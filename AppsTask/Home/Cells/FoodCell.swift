@@ -16,7 +16,7 @@ class FoodCell: UITableViewCell {
     @IBOutlet weak var foodNameLabel1: UILabel!
     @IBOutlet weak var favoriteButton: UIButton!
     
-    var vc : ViewController?
+    var viewModel : ViewModel?
     var food : Food? {
         didSet {
             backgroundImage.image = UIImage(named: food?.backgroundImage ?? "")
@@ -43,10 +43,10 @@ class FoodCell: UITableViewCell {
     }
     @IBAction func favoriteButton(_ sender: Any) {
         if food!.isFavorite {
-            vc?.toggleFavorite(id: food?.id ?? "", isFavorite: false)
+            viewModel?.toggleFavorite(id: food?.id ?? "", isFavorite: false)
             favoriteButton.setImage(UIImage(named: "heart"), for: .normal)
         }else {
-            vc?.toggleFavorite(id: food?.id ?? "", isFavorite: true)
+            viewModel?.toggleFavorite(id: food?.id ?? "", isFavorite: true)
             favoriteButton.setImage(UIImage(named: "favorite"), for: .normal)
         }
     }

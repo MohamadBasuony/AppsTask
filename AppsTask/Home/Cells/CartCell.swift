@@ -17,7 +17,7 @@ class CartCell: UITableViewCell {
 
     var qunatity = 0.0
     var price = 0.0
-    var vc : CartVC?
+    var viewModel : ViewModel?
     var cart : Cart? {
         didSet {
             foodImage.image = UIImage(named: cart?.image ?? "")
@@ -46,7 +46,7 @@ class CartCell: UITableViewCell {
         priceLabel.text = "\(price)$"
         qunatity = qunatity + 1
         quantityLabel.text = "\(qunatity)"
-        vc?.updateQuantity(id: cart?.id ?? "0", quantity: qunatity, plus: true)
+        viewModel?.updateQuantity(id: cart?.id ?? "0", quantity: qunatity, plus: true)
         
     }
     
@@ -54,13 +54,13 @@ class CartCell: UITableViewCell {
         
         if (qunatity - 1) == 0 {
             quantityLabel.text = "\(1)"
-            vc?.updateQuantity(id: cart?.id ?? "0", quantity: 0, plus: false)
+            viewModel?.updateQuantity(id: cart?.id ?? "0", quantity: 0, plus: false)
         }else{
             price = price - (cart?.price ?? 0)
             priceLabel.text = "\(price)$"
             qunatity = qunatity - 1
             quantityLabel.text = "\(qunatity)"
-            vc?.updateQuantity(id: cart?.id ?? "0", quantity: qunatity, plus: false)
+            viewModel?.updateQuantity(id: cart?.id ?? "0", quantity: qunatity, plus: false)
 
         }
     }
